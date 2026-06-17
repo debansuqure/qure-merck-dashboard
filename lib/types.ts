@@ -40,6 +40,7 @@ export interface Action {
   description: string | null;
   programme_id: string | null;
   site_id: string | null;
+  milestone_id: string | null;
   owner: string | null;
   priority: ActionPriority;
   due_date: string | null;
