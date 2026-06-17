@@ -5,9 +5,15 @@ import { SESSION_COOKIE, SESSION_VALUE } from "@/lib/auth";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect /admin page (but not the login API)
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/api/auth")) {
+  // Allow login page itself
+  if (pathname === "/admin/login") {
+    return NextResponse.next();
+  }
+
+  // Protect admin routes
+  if (pathname.startsWith("/admin")) {
     const session = request.cookies.get(SESSION_COOKIE)?.value;
+
     if (session !== SESSION_VALUE) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
