@@ -27,7 +27,6 @@ export default function AdminClient({
   actions: Action[];
   risks: Risk[];
   programmes: Programme[];
-})[];
 }) {
   const router = useRouter();
   const [sites, setSites] = useState(initialSites);
