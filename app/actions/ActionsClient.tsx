@@ -267,7 +267,6 @@ setForm((prev) => ({ ...prev, [field]: value }));
 async function handleSave() {
 if (!form.title.trim()) return;
 
-```
 setSaving(true);
 
 await onSave({
@@ -281,14 +280,12 @@ await onSave({
 } as Partial<Action>);
 
 setSaving(false);
-```
 
 }
 
 return ( <div className="card p-4 border-gray-300"> <p className="text-sm font-semibold text-gray-900 mb-3">
 {initial ? "Edit Action" : "New Action"} </p>
 
-```
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
     <div className="sm:col-span-2">
       <label className="label">Title *</label>
