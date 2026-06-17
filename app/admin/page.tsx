@@ -10,7 +10,7 @@ export default async function AdminPage() {
   if (!isAuthenticated()) redirect("/admin/login");
 
   const [sitesRes, actionsRes, risksRes, programmesRes] = await Promise.all([
-    supabase.from("sites").select("*, milestones(*), programme:programmes(*)").order("identifier"),
+    supabase.from("sites").select("*").order("identifier"),
     supabase.from("actions").select("*, programme:programmes(*), site:sites(identifier)").order("created_at", { ascending: false }),
     supabase.from("risks").select("*, programme:programmes(*)").order("created_at", { ascending: false }),
     supabase.from("programmes").select("*").order("name"),
