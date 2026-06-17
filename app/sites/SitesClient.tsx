@@ -87,17 +87,17 @@ export default function SitesClient({
 
             {isOpen && (
               <div className="border-t border-gray-100">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto max-w-full">
                   <table className="min-w-max w-full">
                     <thead>
                       <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="px-5 py-4 text-left min-w-[260px]">
+                        <th className="sticky left-0 z-30 bg-gray-50 px-5 py-4 text-left min-w-[260px]">
                           <span className="text-xs font-semibold uppercase text-gray-500">
                             Site
                           </span>
                         </th>
 
-                        <th className="px-4 py-4 text-left min-w-[120px]">
+                        <th className="sticky left-[260px] z-30 bg-gray-50 px-4 py-4 text-left min-w-[120px]">
                           <span className="text-xs font-semibold uppercase text-gray-500">
                             Status
                           </span>
@@ -128,7 +128,7 @@ export default function SitesClient({
                               key={site.id}
                               className="border-b border-gray-100 hover:bg-gray-50"
                             >
-                              <td className="px-5 py-4 min-w-[260px]">
+                              <td className="sticky left-0 z-20 bg-white px-5 py-4 min-w-[260px]">
                                 <button
                                   onClick={() => toggleSite(site.id)}
                                   className="flex items-center gap-2"
@@ -141,7 +141,7 @@ export default function SitesClient({
                                 </button>
                               </td>
 
-                              <td className="px-4 py-4">
+                              <td className="sticky left-[260px] z-20 bg-white px-4 py-4">
                                 <span
                                   className={cn(
                                     "chip",
