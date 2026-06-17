@@ -20,7 +20,7 @@ export default function ActionsClient({
 }: {
   actions: Action[];
   programmes: Programme[];
-  sites: Pick<Site, "id" | "identifier">[];
+  sites: Site[];
   isAdmin: boolean;
   onUpdate?: (id: string, updates: Partial<Action>) => Promise<void>;
   onDelete?: (id: string) => Promise<void>;
@@ -227,108 +227,210 @@ function ActionRow({
 }
 
 function ActionForm({
-  initial,
-  programmes,
-  sites,
-  onSave,
-  onCancel,
+initial,
+programmes,
+sites,
+onSave,
+onCancel,
 }: {
-  initial?: Partial<Action>;
-  programmes: Programme[];
-  sites: Pick<Site, "id" | "identifier">[];
-  onSave: (data: Partial<Action>) => Promise<void>;
-  onCancel: () => void;
+initial?: Partial<Action>;
+programmes: Programme[];
+sites: Site[];
+onSave: (data: Partial<Action>) => Promise<void>;
+onCancel: () => void;
 }) {
-  const [form, setForm] = useState({
-    title: initial?.title ?? "",
-    description: initial?.description ?? "",
-    programme_id: initial?.programme_id ?? "",
-    site_id: initial?.site_id ?? "",
-    owner: initial?.owner ?? "",
-    priority: initial?.priority ?? "medium",
-    due_date: initial?.due_date ?? "",
-    status: initial?.status ?? "open",
-  });
-  const [saving, setSaving] = useState(false);
+const [form, setForm] = useState({
+title: initial?.title ?? "",
+description: initial?.description ?? "",
+programme_id: initial?.programme_id ?? "",
+site_id: initial?.site_id ?? "",
+milestone_id: (initial as any)?.milestone_id ?? "",
+owner: initial?.owner ?? "",
+priority: initial?.priority ?? "medium",
+due_date: initial?.due_date ?? "",
+status: initial?.status ?? "open",
+});
 
-  function set(field: string, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  }
+const [saving, setSaving] = useState(false);
 
-  async function handleSave() {
-    if (!form.title.trim()) return;
-    setSaving(true);
-    await onSave({
-      ...form,
-      programme_id: form.programme_id || null,
-      site_id: form.site_id || null,
-      owner: form.owner || null,
-      description: form.description || null,
-      due_date: form.due_date || null,
-    } as Partial<Action>);
-    setSaving(false);
-  }
+const selectedSite = sites.find(
+(s) => s.id === form.site_id
+);
 
-  return (
-    <div className="card p-4 border-gray-300">
-      <p className="text-sm font-semibold text-gray-900 mb-3">{initial ? "Edit Action" : "New Action"}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-        <div className="sm:col-span-2">
-          <label className="label">Title *</label>
-          <input className="input" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="Action title" />
-        </div>
-        <div className="sm:col-span-2">
-          <label className="label">Description</label>
-          <textarea className="input" rows={2} value={form.description} onChange={(e) => set("description", e.target.value)} placeholder="Optional description" />
-        </div>
-        <div>
-          <label className="label">Programme</label>
-          <select className="select" value={form.programme_id} onChange={(e) => set("programme_id", e.target.value)}>
-            <option value="">— None —</option>
-            {programmes.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className="label">Site</label>
-          <select className="select" value={form.site_id} onChange={(e) => set("site_id", e.target.value)}>
-            <option value="">— None —</option>
-            {sites.map((s) => <option key={s.id} value={s.id}>{s.identifier}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className="label">Owner</label>
-          <input className="input" value={form.owner} onChange={(e) => set("owner", e.target.value)} placeholder="Name" />
-        </div>
-        <div>
-          <label className="label">Priority</label>
-          <select className="select" value={form.priority} onChange={(e) => set("priority", e.target.value)}>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-        <div>
-          <label className="label">Due Date</label>
-          <input type="date" className="input" value={form.due_date} onChange={(e) => set("due_date", e.target.value)} />
-        </div>
-        {initial && (
-          <div>
-            <label className="label">Status</label>
-            <select className="select" value={form.status} onChange={(e) => set("status", e.target.value)}>
-              <option value="open">Open</option>
-              <option value="complete">Complete</option>
-            </select>
-          </div>
-        )}
-      </div>
-      <div className="flex gap-2">
-        <button className="btn-primary" onClick={handleSave} disabled={saving || !form.title.trim()}>
-          {saving ? "Saving…" : "Save"}
-        </button>
-        <button className="btn-secondary" onClick={onCancel}>Cancel</button>
-      </div>
+const availableMilestones =
+selectedSite?.milestones ?? [];
+
+function set(field: string, value: string) {
+setForm((prev) => ({ ...prev, [field]: value }));
+}
+
+async function handleSave() {
+if (!form.title.trim()) return;
+
+```
+setSaving(true);
+
+await onSave({
+  ...form,
+  milestone_id: form.milestone_id || null,
+  programme_id: form.programme_id || null,
+  site_id: form.site_id || null,
+  owner: form.owner || null,
+  description: form.description || null,
+  due_date: form.due_date || null,
+} as Partial<Action>);
+
+setSaving(false);
+```
+
+}
+
+return ( <div className="card p-4 border-gray-300"> <p className="text-sm font-semibold text-gray-900 mb-3">
+{initial ? "Edit Action" : "New Action"} </p>
+
+```
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+    <div className="sm:col-span-2">
+      <label className="label">Title *</label>
+      <input
+        className="input"
+        value={form.title}
+        onChange={(e) => set("title", e.target.value)}
+        placeholder="Action title"
+      />
     </div>
-  );
+
+    <div className="sm:col-span-2">
+      <label className="label">Description</label>
+      <textarea
+        className="input"
+        rows={2}
+        value={form.description}
+        onChange={(e) => set("description", e.target.value)}
+        placeholder="Optional description"
+      />
+    </div>
+
+    <div>
+      <label className="label">Programme</label>
+      <select
+        className="select"
+        value={form.programme_id}
+        onChange={(e) => set("programme_id", e.target.value)}
+      >
+        <option value="">— None —</option>
+        {programmes.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label className="label">Site</label>
+      <select
+        className="select"
+        value={form.site_id}
+        onChange={(e) => {
+          set("site_id", e.target.value);
+          set("milestone_id", "");
+        }}
+      >
+        <option value="">— None —</option>
+        {sites.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.identifier}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label className="label">Milestone</label>
+      <select
+        className="select"
+        value={(form as any).milestone_id}
+        onChange={(e) => set("milestone_id", e.target.value)}
+      >
+        <option value="">— None —</option>
+
+        {availableMilestones.map((m) => (
+          <option key={m.id} value={m.id}>
+            {m.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label className="label">Owner</label>
+      <input
+        className="input"
+        value={form.owner}
+        onChange={(e) => set("owner", e.target.value)}
+        placeholder="Name"
+      />
+    </div>
+
+    <div>
+      <label className="label">Priority</label>
+      <select
+        className="select"
+        value={form.priority}
+        onChange={(e) => set("priority", e.target.value)}
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+
+    <div>
+      <label className="label">Due Date</label>
+      <input
+        type="date"
+        className="input"
+        value={form.due_date}
+        onChange={(e) => set("due_date", e.target.value)}
+      />
+    </div>
+
+    {initial && (
+      <div>
+        <label className="label">Status</label>
+        <select
+          className="select"
+          value={form.status}
+          onChange={(e) => set("status", e.target.value)}
+        >
+          <option value="open">Open</option>
+          <option value="complete">Complete</option>
+        </select>
+      </div>
+    )}
+  </div>
+
+  <div className="flex gap-2">
+    <button
+      className="btn-primary"
+      onClick={handleSave}
+      disabled={saving || !form.title.trim()}
+    >
+      {saving ? "Saving…" : "Save"}
+    </button>
+
+    <button
+      className="btn-secondary"
+      onClick={onCancel}
+    >
+      Cancel
+    </button>
+  </div>
+</div>
+```
+
+);
 }
 
 function PriorityBadge({ priority }: { priority: string }) {
