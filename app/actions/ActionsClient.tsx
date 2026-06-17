@@ -428,7 +428,6 @@ return ( <div className="card p-4 border-gray-300"> <p className="text-sm font-s
     </button>
   </div>
 </div>
-```
 
 );
 }
