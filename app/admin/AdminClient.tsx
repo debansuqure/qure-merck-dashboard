@@ -22,13 +22,12 @@ export default function AdminClient({
   actions: initialActions,
   risks: initialRisks,
   programmes,
-  sitesForDropdown,
 }: {
   sites: SiteWithDetails[];
   actions: Action[];
   risks: Risk[];
   programmes: Programme[];
-  sitesForDropdown: Pick<Site, "id" | "identifier">[];
+})[];
 }) {
   const router = useRouter();
   const [sites, setSites] = useState(initialSites);
@@ -352,14 +351,14 @@ export default function AdminClient({
       {/* Actions tab */}
       {activeTab === "actions" && (
         <ActionsClient
-          actions={actions}
-          programmes={programmes}
-          sites={sitesForDropdown}
-          isAdmin
-          onAdd={handleAddAction}
-          onUpdate={handleUpdateAction}
-          onDelete={handleDeleteAction}
-        />
+  actions={actions}
+  programmes={programmes}
+  sites={sites}
+  isAdmin
+  onAdd={handleAddAction}
+  onUpdate={handleUpdateAction}
+  onDelete={handleDeleteAction}
+/>
       )}
 
       {/* Risks tab */}
