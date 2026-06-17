@@ -11,7 +11,10 @@ export default async function ActionsPage() {
       .select("*, programme:programmes(*), site:sites(identifier)")
       .order("created_at", { ascending: false }),
     supabase.from("programmes").select("*").order("name"),
-    supabase.from("sites").select("id, identifier").order("identifier"),
+    supabase
+  .from("sites")
+  .select("*, milestones(*)")
+  .order("identifier"),
   ]);
 
   return (
@@ -23,7 +26,7 @@ export default async function ActionsPage() {
       <ActionsClient
         actions={(actionsRes.data ?? []) as Action[]}
         programmes={(programmesRes.data ?? []) as Programme[]}
-        sites={(sitesRes.data ?? []) as Pick<Site, "id" | "identifier">[]}
+        sites={(sitesRes.data ?? []) as Site[]}
         isAdmin={false}
       />
     </div>
