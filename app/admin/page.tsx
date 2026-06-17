@@ -57,12 +57,11 @@ export default async function AdminPage() {
       </div>
 
       <AdminClient
-        sites={sites}
-        actions={actions}
-        risks={risks}
-        programmes={programmes}
-        sitesForDropdown={sitesForDropdown}
-      />
+  sites={sites}
+  actions={actions}
+  risks={risks}
+  programmes={programmes}
+/>
     </div>
   );
 }
