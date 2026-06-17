@@ -21,7 +21,27 @@ export default async function AdminPage() {
       .order("created_at", { ascending: false }),
     supabase.from("programmes").select("*").order("name"),
   ]);
+console.error("=== DEBUG START ===");
 
+console.error(
+  "SUPABASE URL",
+  process.env.NEXT_PUBLIC_SUPABASE_URL
+);
+
+console.error(
+  "ANON KEY EXISTS",
+  !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+console.error("programmes error", programmesRes.error);
+console.error("sites error", sitesRes.error);
+console.error("actions error", actionsRes.error);
+console.error("risks error", risksRes.error);
+
+console.error("programmes data", programmesRes.data);
+console.error("sites data", sitesRes.data);
+
+console.error("=== DEBUG END ===");
   // DEBUG LOGGING
   console.log("sites error", sitesRes.error);
   console.log("actions error", actionsRes.error);
