@@ -31,13 +31,14 @@ export default async function AdminPage() {
         </div>
         <span className="text-xs bg-gray-900 text-white px-2.5 py-1 rounded-md font-medium">Admin Mode</span>
       </div>
-      <AdminClient
-        sites={sites}
-        actions={actions}
-        risks={risks}
-        programmes={programmes}
-        sitesForDropdown={sitesForDropdown}
-      />
+    <div>
+  <h1>Debug</h1>
+
+  <p>Programmes: {programmes.length}</p>
+  <p>Sites: {sites.length}</p>
+  <p>Actions: {actions.length}</p>
+  <p>Risks: {risks.length}</p>
+</div>
     </div>
   );
 }
