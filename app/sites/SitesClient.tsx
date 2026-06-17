@@ -79,7 +79,7 @@ export default function SitesClient({ grouped }: { grouped: GroupedData[] }) {
                         <div className="flex items-center gap-3">
                           <ChevronIcon open={siteOpen} size="sm" />
                           <span className="text-sm font-medium text-gray-900">
-                            {site.identifier}
+                            {site.name || site.identifier}
                           </span>
                           <span className="text-xs text-gray-400">{site.country}</span>
                         </div>
